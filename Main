@@ -1,5 +1,5 @@
 #uk.ac.cardiffmet.joshedwards
-
+import csv
 # Input & output file names
 iname = 'dna.txt'
 oname = 'dnatest3.csv'
@@ -11,9 +11,20 @@ with open(iname) as f:
 # Split the data into chunks, columns and rows
 chunksize = int(input("How many characters per column?"))
 cols = int(input("How many columns?"))
+#cols_string = str(cols)
 
 with open(oname, 'w') as f:
     row = []
+    result_index = 1
+    for i in range(0, cols):
+            f.write('Result %i, '%result_index )
+            row = []
+            result_index += 1
+            if i == cols:
+                f.write(', '.join(row) + '\n')
+                row = []
+            if row:
+                f.write(', '.join(row) + '\n')
     for i in range(0, len(data), chunksize):
         chunk = data[i:i+chunksize]
         row.append(chunk)
@@ -21,4 +32,4 @@ with open(oname, 'w') as f:
             f.write(', '.join(row) + '\n')
             row = []
     if row:
-        f.write(', '.join(row) + '\n')
+        f.
