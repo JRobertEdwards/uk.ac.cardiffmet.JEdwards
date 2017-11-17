@@ -32,4 +32,4 @@ with open(oname, 'w') as f:
             f.write(', '.join(row) + '\n')
             row = []
     if row:
-        f.
+        f.write(', '.join(row) + '\n')
