@@ -1,53 +1,41 @@
-import random
-import string
-import sys
-import os
+#uk.ac.cardiffmet.joshedwards
+import csv
+# Input & output file names
+iname = 'dna.txt'
+oname = 'dnatest3.csv'
 
-from builtins import print
+# Read the data and eliminate all whitespace
+with open(iname) as f:
+    data = ''.join(f.read().split())
 
-#by Josh Robert Edwards for cardiffMet dissertation
-# josh.r.edwards@gmail.com
+# Split the data into chunks, columns and rows
+chunksize = int(input("How many characters per column?"))
+cols = int(input("How many columns?"))
+#cols_string = str(cols)
 
-from Tools.i18n.makelocalealias import print_differences
+with open(oname, 'w') as f:
+    row = []
+    result_index = 1
+    for i in range(0, cols, 1):
+            f.write('Result %i, ' %result_index )
+            row = []
+            result_index += 1
+            if result_index == cols + 1:
+                f.write('Next char in sequence' + '\n')
+            if i == cols:
+                f.write(', '.join(row) + '\n')
 
-#counts used to set letters to be taken into intake
-index_start = 0
-index_finish = 4
-count =1
+                row = []
+            if row:
+                f.write(', '.join(row) + '\n')
+    for i in range(0, len(data), chunksize):
+        chunk = data[i:i+chunksize]
+        row.append(chunk)
+        if len(row) == cols:
+            next_char = data[i:i+chunksize-1]
+            row.append(next_char)
+            f.write(', '.join(row) + '\n')
+            row = []
+    if row:
 
-#open the file to be read
-test_file = open("dna.txt", "r")
-
-#read the file and take note of its size for index purposes
-read_file = test_file.read()
-file_size = read_file.__len__()
-print((file_size))
-i = 1
-index = 0
-#use loop to make more than one file output
-while(index < file_size):
-
-#print count used to measure progress for testing
-    print('the count is', count)
-    count += 1
-    index += 4
-    print('index: ',index)
-
-#intake only uses letters from index count per file
-    intake = read_file[index_start:index_finish]
-    print(intake)
-
-    index_start += 4
-    index_finish +=4
-
-#output a txt file with the 4 letters from intake as a individually numbered txt file
-    text_file_output = open("Output%i.txt"%i,'w')
-    i += 1
-    text_file_output.write(intake)
-    text_file_output.close()
-#define path to print to console for file saving
-    path = os.path.abspath("Output%i")
-    directory = os.path.dirname(path)
-    print(path)
-
-test_file.close()
+        f.write(', '.join(row) + '\n')
