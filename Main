@@ -11,31 +11,41 @@ with open(iname) as f:
 # Split the data into chunks, columns and rows
 chunksize = int(input("How many characters per column?"))
 cols = int(input("How many columns?"))
-#cols_string = str(cols)
 
+#open output file and write as f
 with open(oname, 'w') as f:
+    #create row array to result strings for each column entered by user
     row = []
     result_index = 1
     for i in range(0, cols, 1):
             f.write('Result %i, ' %result_index )
             row = []
             result_index += 1
+            #once amount of columns defined by user filled, add extra column for next char column
             if result_index == cols + 1:
                 f.write('Next char in sequence' + '\n')
+                #join row and create new line and a new row array
             if i == cols:
                 f.write(', '.join(row) + '\n')
 
                 row = []
             if row:
                 f.write(', '.join(row) + '\n')
+    #adding data from txt file using user defined chunk size
     for i in range(0, len(data), chunksize):
         chunk = data[i:i+chunksize]
         row.append(chunk)
         if len(row) == cols:
-            next_char = data[i:i+chunksize-1]
-            row.append(next_char)
-            f.write(', '.join(row) + '\n')
-            row = []
+
+            if len(row) != cols:
+                f.write(', '.join(row) + '\n')
+                row = []
+            else:
+                #add in the -1 index of current chunksieze +1 to add next line character to last column
+                next_char = data[i:i + (chunksize + 1)]
+                row.append(next_char[-1])
+                f.write(', '.join(row) + '\n')
+                row = []
     if row:
 
         f.write(', '.join(row) + '\n')
